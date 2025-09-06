@@ -1,0 +1,1088 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.outscraper.cloud/appstore/reviews?query=https://apps.apple.com/us/app/day-one-journal-private-diary/id1044867788&limit=500&async=false",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "18e1d826-8d6f-4c9b-a721-b1d638cb65b3",
+      "name": "Scrape iOS Reviews",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        16
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ws5HdNhmubfvm6Sn",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.outscraper.cloud/google-play/reviews?query=com.dayoneapp.dayone&limit=500&sort=newest&false",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d796a990-9e2b-473d-8096-5d25f49def14",
+      "name": "Scrape Android Reviews",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        528,
+        192
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ws5HdNhmubfvm6Sn",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process and clean review data from Outscraper API\nconst items = $input.all();\nconst processedReviews = [];\n\nfor (const item of items) {\n  const appName = item.json.app_name;\n  \n  // Handle Outscraper response format\n  // The response comes as an array with objects containing status and data\n  if (Array.isArray(item.json)) {\n    for (const responseItem of item.json) {\n      if (responseItem.status === 'Success' && responseItem.data && Array.isArray(responseItem.data)) {\n        // data contains nested arrays, so we need to flatten them\n        for (const dataArray of responseItem.data) {\n          if (Array.isArray(dataArray)) {\n            for (const review of dataArray) {\n              // Determine platform based on the query URL\n              let platform = 'Unknown';\n              if (review.query && review.query.includes('apps.apple.com')) {\n                platform = 'iOS App Store';\n              } else if (review.query && review.query.includes('play.google.com')) {\n                platform = 'Google Play Store';\n              }\n              \n              processedReviews.push({\n                app_name: appName,\n                platform: platform,\n                review_id: review.review_id || '',\n                rating: parseInt(review.review_rating) || 0,\n                title: review.review_title || '',\n                review_text: review.review_text || '',\n                author: review.author_title || review.author_name || '',\n                date: review.review_updated || review.review_date_formated || '',\n                helpful_count: parseInt(review.vote_sum) || 0,\n                vote_count: parseInt(review.vote_count) || 0,\n                version: review.version || '',\n                country: review.country || '',\n                timestamp: review.review_timestamp || 0\n              });\n            }\n          }\n        }\n      }\n    }\n  }\n  \n  // Also handle if the response is directly in the expected format\n  // (fallback for different response structures)\n  else if (item.json.status === 'Success' && item.json.data) {\n    const dataToProcess = Array.isArray(item.json.data[0]) ? item.json.data[0] : item.json.data;\n    \n    if (Array.isArray(dataToProcess)) {\n      for (const review of dataToProcess) {\n        let platform = 'Unknown';\n        if (review.query && review.query.includes('apps.apple.com')) {\n          platform = 'iOS App Store';\n        } else if (review.query && review.query.includes('play.google.com')) {\n          platform = 'Google Play Store';\n        }\n        \n        processedReviews.push({\n          app_name: appName,\n          platform: platform,\n          review_id: review.review_id || '',\n          rating: parseInt(review.review_rating) || 0,\n          title: review.review_title || '',\n          review_text: review.review_text || '',\n          author: review.author_title || review.author_name || '',\n          date: review.review_updated || review.review_date_formated || '',\n          helpful_count: parseInt(review.vote_sum) || 0,\n          vote_count: parseInt(review.vote_count) || 0,\n          version: review.version || '',\n          country: review.country || '',\n          timestamp: review.review_timestamp || 0\n        });\n      }\n    }\n  }\n}\n\n// Remove duplicates and filter out empty reviews\nconst uniqueReviews = processedReviews.filter((review, index, self) => {\n  return review.review_text.trim() !== '' && \n         index === self.findIndex(r => \n           r.review_id === review.review_id && \n           r.platform === review.platform\n         );\n});\n\n// Sort by timestamp (newest first), fallback to date string\nuniqueReviews.sort((a, b) => {\n  if (a.timestamp && b.timestamp) {\n    return b.timestamp - a.timestamp;\n  }\n  return new Date(b.date) - new Date(a.date);\n});\n\nreturn uniqueReviews.map(review => ({ json: review }));"
+      },
+      "id": "2665fd95-d7a0-48a6-a741-24269aba25dc",
+      "name": "Process Reviews",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        16
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9bc5f6bc-1d7f-4d9e-8a5b-83db6f36e8bd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        16
+      ],
+      "id": "b4075686-ab17-4ef2-b1dd-1f067bdf0057",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "url": "https://api.outscraper.cloud/requests/a-968bbfa2-9da4-4a3e-a4cf-a160e68f205c",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        176
+      ],
+      "id": "50f9e27e-243f-4989-a533-f8930a5a0c0a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process and clean review data from Outscraper API\nconst items = $input.all();\nconst processedReviews = [];\n\nfor (const item of items) {\n  const appName = item.json.app_name;\n  \n  // Handle Outscraper response format\n  // The response comes as an array with objects containing status and data\n  if (Array.isArray(item.json)) {\n    for (const responseItem of item.json) {\n      if (responseItem.status === 'Success' && responseItem.data && Array.isArray(responseItem.data)) {\n        // data contains nested arrays, so we need to flatten them\n        for (const dataArray of responseItem.data) {\n          if (Array.isArray(dataArray)) {\n            for (const review of dataArray) {\n              // Determine platform based on the query URL\n              let platform = 'Unknown';\n              if (review.query && review.query.includes('apps.apple.com')) {\n                platform = 'iOS App Store';\n              } else if (review.query && review.query.includes('play.google.com')) {\n                platform = 'Google Play Store';\n              }\n              \n              processedReviews.push({\n                app_name: appName,\n                platform: platform,\n                review_id: review.review_id || '',\n                rating: parseInt(review.review_rating) || 0,\n                title: review.review_title || '',\n                review_text: review.review_text || '',\n                author: review.author_title || review.author_name || '',\n                date: review.review_updated || review.review_date_formated || '',\n                helpful_count: parseInt(review.vote_sum) || 0,\n                vote_count: parseInt(review.vote_count) || 0,\n                version: review.version || '',\n                country: review.country || '',\n                timestamp: review.review_timestamp || 0\n              });\n            }\n          }\n        }\n      }\n    }\n  }\n  \n  // Also handle if the response is directly in the expected format\n  // (fallback for different response structures)\n  else if (item.json.status === 'Success' && item.json.data) {\n    const dataToProcess = Array.isArray(item.json.data[0]) ? item.json.data[0] : item.json.data;\n    \n    if (Array.isArray(dataToProcess)) {\n      for (const review of dataToProcess) {\n        let platform = 'Unknown';\n        if (review.query && review.query.includes('apps.apple.com')) {\n          platform = 'iOS App Store';\n        } else if (review.query && review.query.includes('play.google.com')) {\n          platform = 'Google Play Store';\n        }\n        \n        processedReviews.push({\n          app_name: appName,\n          platform: platform,\n          review_id: review.review_id || '',\n          rating: parseInt(review.review_rating) || 0,\n          title: review.review_title || '',\n          review_text: review.review_text || '',\n          author: review.author_title || review.author_name || '',\n          date: review.review_updated || review.review_date_formated || '',\n          helpful_count: parseInt(review.vote_sum) || 0,\n          vote_count: parseInt(review.vote_count) || 0,\n          version: review.version || '',\n          country: review.country || '',\n          timestamp: review.review_timestamp || 0\n        });\n      }\n    }\n  }\n}\n\n// Remove duplicates and filter out empty reviews\nconst uniqueReviews = processedReviews.filter((review, index, self) => {\n  return review.review_text.trim() !== '' && \n         index === self.findIndex(r => \n           r.review_id === review.review_id && \n           r.platform === review.platform\n         );\n});\n\n// Sort by timestamp (newest first), fallback to date string\nuniqueReviews.sort((a, b) => {\n  if (a.timestamp && b.timestamp) {\n    return b.timestamp - a.timestamp;\n  }\n  return new Date(b.date) - new Date(a.date);\n});\n\nreturn uniqueReviews.map(review => ({ json: review }));"
+      },
+      "id": "c2b97d25-a567-4456-90d7-d4586bcec349",
+      "name": "Process Reviews1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1024,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        416
+      ],
+      "id": "54bb6b99-9da1-4147-9387-7d2c539ccd56",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "url": "https://api.outscraper.cloud/appstore/reviews?query=https://apps.apple.com/us/app/journey-diary-journal/id1300202543&limit=500&async=false",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "da2133fe-80a9-4f11-81d7-4fc2502be5b1",
+      "name": "Scrape iOS Reviews1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        -176
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ws5HdNhmubfvm6Sn",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process and clean review data from Outscraper API\nconst items = $input.all();\nconst processedReviews = [];\n\nfor (const item of items) {\n  const appName = item.json.app_name;\n  \n  // Handle Outscraper response format\n  // The response comes as an array with objects containing status and data\n  if (Array.isArray(item.json)) {\n    for (const responseItem of item.json) {\n      if (responseItem.status === 'Success' && responseItem.data && Array.isArray(responseItem.data)) {\n        // data contains nested arrays, so we need to flatten them\n        for (const dataArray of responseItem.data) {\n          if (Array.isArray(dataArray)) {\n            for (const review of dataArray) {\n              // Determine platform based on the query URL\n              let platform = 'Unknown';\n              if (review.query && review.query.includes('apps.apple.com')) {\n                platform = 'iOS App Store';\n              } else if (review.query && review.query.includes('play.google.com')) {\n                platform = 'Google Play Store';\n              }\n              \n              processedReviews.push({\n                app_name: appName,\n                platform: platform,\n                review_id: review.review_id || '',\n                rating: parseInt(review.review_rating) || 0,\n                title: review.review_title || '',\n                review_text: review.review_text || '',\n                author: review.author_title || review.author_name || '',\n                date: review.review_updated || review.review_date_formated || '',\n                helpful_count: parseInt(review.vote_sum) || 0,\n                vote_count: parseInt(review.vote_count) || 0,\n                version: review.version || '',\n                country: review.country || '',\n                timestamp: review.review_timestamp || 0\n              });\n            }\n          }\n        }\n      }\n    }\n  }\n  \n  // Also handle if the response is directly in the expected format\n  // (fallback for different response structures)\n  else if (item.json.status === 'Success' && item.json.data) {\n    const dataToProcess = Array.isArray(item.json.data[0]) ? item.json.data[0] : item.json.data;\n    \n    if (Array.isArray(dataToProcess)) {\n      for (const review of dataToProcess) {\n        let platform = 'Unknown';\n        if (review.query && review.query.includes('apps.apple.com')) {\n          platform = 'iOS App Store';\n        } else if (review.query && review.query.includes('play.google.com')) {\n          platform = 'Google Play Store';\n        }\n        \n        processedReviews.push({\n          app_name: appName,\n          platform: platform,\n          review_id: review.review_id || '',\n          rating: parseInt(review.review_rating) || 0,\n          title: review.review_title || '',\n          review_text: review.review_text || '',\n          author: review.author_title || review.author_name || '',\n          date: review.review_updated || review.review_date_formated || '',\n          helpful_count: parseInt(review.vote_sum) || 0,\n          vote_count: parseInt(review.vote_count) || 0,\n          version: review.version || '',\n          country: review.country || '',\n          timestamp: review.review_timestamp || 0\n        });\n      }\n    }\n  }\n}\n\n// Remove duplicates and filter out empty reviews\nconst uniqueReviews = processedReviews.filter((review, index, self) => {\n  return review.review_text.trim() !== '' && \n         index === self.findIndex(r => \n           r.review_id === review.review_id && \n           r.platform === review.platform\n         );\n});\n\n// Sort by timestamp (newest first), fallback to date string\nuniqueReviews.sort((a, b) => {\n  if (a.timestamp && b.timestamp) {\n    return b.timestamp - a.timestamp;\n  }\n  return new Date(b.date) - new Date(a.date);\n});\n\nreturn uniqueReviews.map(review => ({ json: review }));"
+      },
+      "id": "174c8c1b-ea73-40ed-802f-508b94f7dcf4",
+      "name": "Process Reviews2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        -336
+      ],
+      "id": "d30f4848-2c2d-443f-a65b-88276383fe44",
+      "name": "Convert to File2"
+    },
+    {
+      "parameters": {
+        "url": "https://api.outscraper.cloud/appstore/reviews?query=https://apps.apple.com/us/app/journal/id6447391597&limit=500&async=false",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "147ef853-1072-439b-8423-6ee11b21c813",
+      "name": "Scrape iOS Reviews2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        -400
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ws5HdNhmubfvm6Sn",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process and clean review data from Outscraper API\nconst items = $input.all();\nconst processedReviews = [];\n\nfor (const item of items) {\n  const appName = item.json.app_name;\n  \n  // Handle Outscraper response format\n  // The response comes as an array with objects containing status and data\n  if (Array.isArray(item.json)) {\n    for (const responseItem of item.json) {\n      if (responseItem.status === 'Success' && responseItem.data && Array.isArray(responseItem.data)) {\n        // data contains nested arrays, so we need to flatten them\n        for (const dataArray of responseItem.data) {\n          if (Array.isArray(dataArray)) {\n            for (const review of dataArray) {\n              // Determine platform based on the query URL\n              let platform = 'Unknown';\n              if (review.query && review.query.includes('apps.apple.com')) {\n                platform = 'iOS App Store';\n              } else if (review.query && review.query.includes('play.google.com')) {\n                platform = 'Google Play Store';\n              }\n              \n              processedReviews.push({\n                app_name: appName,\n                platform: platform,\n                review_id: review.review_id || '',\n                rating: parseInt(review.review_rating) || 0,\n                title: review.review_title || '',\n                review_text: review.review_text || '',\n                author: review.author_title || review.author_name || '',\n                date: review.review_updated || review.review_date_formated || '',\n                helpful_count: parseInt(review.vote_sum) || 0,\n                vote_count: parseInt(review.vote_count) || 0,\n                version: review.version || '',\n                country: review.country || '',\n                timestamp: review.review_timestamp || 0\n              });\n            }\n          }\n        }\n      }\n    }\n  }\n  \n  // Also handle if the response is directly in the expected format\n  // (fallback for different response structures)\n  else if (item.json.status === 'Success' && item.json.data) {\n    const dataToProcess = Array.isArray(item.json.data[0]) ? item.json.data[0] : item.json.data;\n    \n    if (Array.isArray(dataToProcess)) {\n      for (const review of dataToProcess) {\n        let platform = 'Unknown';\n        if (review.query && review.query.includes('apps.apple.com')) {\n          platform = 'iOS App Store';\n        } else if (review.query && review.query.includes('play.google.com')) {\n          platform = 'Google Play Store';\n        }\n        \n        processedReviews.push({\n          app_name: appName,\n          platform: platform,\n          review_id: review.review_id || '',\n          rating: parseInt(review.review_rating) || 0,\n          title: review.review_title || '',\n          review_text: review.review_text || '',\n          author: review.author_title || review.author_name || '',\n          date: review.review_updated || review.review_date_formated || '',\n          helpful_count: parseInt(review.vote_sum) || 0,\n          vote_count: parseInt(review.vote_count) || 0,\n          version: review.version || '',\n          country: review.country || '',\n          timestamp: review.review_timestamp || 0\n        });\n      }\n    }\n  }\n}\n\n// Remove duplicates and filter out empty reviews\nconst uniqueReviews = processedReviews.filter((review, index, self) => {\n  return review.review_text.trim() !== '' && \n         index === self.findIndex(r => \n           r.review_id === review.review_id && \n           r.platform === review.platform\n         );\n});\n\n// Sort by timestamp (newest first), fallback to date string\nuniqueReviews.sort((a, b) => {\n  if (a.timestamp && b.timestamp) {\n    return b.timestamp - a.timestamp;\n  }\n  return new Date(b.date) - new Date(a.date);\n});\n\nreturn uniqueReviews.map(review => ({ json: review }));"
+      },
+      "id": "29da60a7-a050-4547-86d3-9a2510cff8bb",
+      "name": "Process Reviews3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        -496
+      ],
+      "id": "cf09873c-67b5-4570-a083-4af7dbc00dda",
+      "name": "Convert to File3"
+    },
+    {
+      "parameters": {
+        "url": "https://api.outscraper.cloud/google-play/reviews?query=com.journey.app&limit=500&sort=newest&false",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ee6e94a0-ab3f-44df-9eec-03cd79005c59",
+      "name": "Scrape Android Reviews1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        528,
+        368
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ws5HdNhmubfvm6Sn",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process and clean review data from Outscraper API\nconst items = $input.all();\nconst processedReviews = [];\n\nfor (const item of items) {\n  const appName = item.json.app_name;\n  \n  // Handle Outscraper response format\n  // The response comes as an array with objects containing status and data\n  if (Array.isArray(item.json)) {\n    for (const responseItem of item.json) {\n      if (responseItem.status === 'Success' && responseItem.data && Array.isArray(responseItem.data)) {\n        // data contains nested arrays, so we need to flatten them\n        for (const dataArray of responseItem.data) {\n          if (Array.isArray(dataArray)) {\n            for (const review of dataArray) {\n              // Determine platform based on the query URL\n              let platform = 'Unknown';\n              if (review.query && review.query.includes('apps.apple.com')) {\n                platform = 'iOS App Store';\n              } else if (review.query && review.query.includes('play.google.com')) {\n                platform = 'Google Play Store';\n              }\n              \n              processedReviews.push({\n                app_name: appName,\n                platform: platform,\n                review_id: review.review_id || '',\n                rating: parseInt(review.review_rating) || 0,\n                title: review.review_title || '',\n                review_text: review.review_text || '',\n                author: review.author_title || review.author_name || '',\n                date: review.review_updated || review.review_date_formated || '',\n                helpful_count: parseInt(review.vote_sum) || 0,\n                vote_count: parseInt(review.vote_count) || 0,\n                version: review.version || '',\n                country: review.country || '',\n                timestamp: review.review_timestamp || 0\n              });\n            }\n          }\n        }\n      }\n    }\n  }\n  \n  // Also handle if the response is directly in the expected format\n  // (fallback for different response structures)\n  else if (item.json.status === 'Success' && item.json.data) {\n    const dataToProcess = Array.isArray(item.json.data[0]) ? item.json.data[0] : item.json.data;\n    \n    if (Array.isArray(dataToProcess)) {\n      for (const review of dataToProcess) {\n        let platform = 'Unknown';\n        if (review.query && review.query.includes('apps.apple.com')) {\n          platform = 'iOS App Store';\n        } else if (review.query && review.query.includes('play.google.com')) {\n          platform = 'Google Play Store';\n        }\n        \n        processedReviews.push({\n          app_name: appName,\n          platform: platform,\n          review_id: review.review_id || '',\n          rating: parseInt(review.review_rating) || 0,\n          title: review.review_title || '',\n          review_text: review.review_text || '',\n          author: review.author_title || review.author_name || '',\n          date: review.review_updated || review.review_date_formated || '',\n          helpful_count: parseInt(review.vote_sum) || 0,\n          vote_count: parseInt(review.vote_count) || 0,\n          version: review.version || '',\n          country: review.country || '',\n          timestamp: review.review_timestamp || 0\n        });\n      }\n    }\n  }\n}\n\n// Remove duplicates and filter out empty reviews\nconst uniqueReviews = processedReviews.filter((review, index, self) => {\n  return review.review_text.trim() !== '' && \n         index === self.findIndex(r => \n           r.review_id === review.review_id && \n           r.platform === review.platform\n         );\n});\n\n// Sort by timestamp (newest first), fallback to date string\nuniqueReviews.sort((a, b) => {\n  if (a.timestamp && b.timestamp) {\n    return b.timestamp - a.timestamp;\n  }\n  return new Date(b.date) - new Date(a.date);\n});\n\nreturn uniqueReviews.map(review => ({ json: review }));"
+      },
+      "id": "ef47d364-f4a0-42ba-9d6c-1aa38ca9e3b7",
+      "name": "Process Reviews4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        528
+      ],
+      "id": "e14784bc-cb38-4173-b9ab-993b0bf3e24a",
+      "name": "Convert to File4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "97cf4638-86ee-4f5c-b72c-ba77a640f23d",
+      "name": "Spreadsheet → Items1",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1456,
+        -672
+      ],
+      "notes": "Parses CSV rows into items."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Randomly sample up to 10 rows and build concise bullets.\nconst items = $input.all();\nconst rows = items.map(i => i.json);\n// Try to auto-detect likely text column\nconst guessTextKey = (row) => {\n  const prefer = ['text','review','review_text','body','content','comment','message','desc','description'];\n  for (const k of prefer) {\n    if (row[k] && String(row[k]).trim()) return k;\n  }\n  // fallback: longest string field\n  const keys = Object.keys(row);\n  let best = null, len = 0;\n  for (const k of keys) {\n    const v = row[k];\n    if (typeof v === 'string' && v.trim().length > len) { \n      best = k; \n      len = v.trim().length; \n    }\n  }\n  return best || 'text';\n};\nconst tKey = rows.length ? guessTextKey(rows[0]) : 'text';\n// Fisher–Yates shuffle then slice\nfor (let i = rows.length - 1; i > 0; i--) {\n  const j = Math.floor(Math.random() * (i + 1));\n  [rows[i], rows[j]] = [rows[j], rows[i]];\n}\nconst take = rows.slice(0, Math.min(10, rows.length));\nfunction trunc(s, n=600) { \n  if(!s) return ''; \n  s = String(s); \n  return s.length > n ? s.slice(0, n-3) + \"...\" : s; \n}\nconst bullets = take.map((r, idx) => {\n  const id = r.id ?? r.ID ?? r.row_id ?? (idx + 1);\n  const product = r.product ? ` (${r.product})` : '';\n  const rating = (r.rating != null && r.rating !== '') ? ` ★${r.rating}` : '';\n  const text = trunc(r[tKey] || '');\n  return `- [${id}]${product}${rating}: ${text}`;\n}).join('\\n');\nreturn [{ \n  json: { \n    count: take.length, \n    bullets, \n    textKeyUsed: tKey \n  } \n}];"
+      },
+      "id": "7e58a602-53e0-4068-bf5c-49e306f15700",
+      "name": "Random Sample ",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1696,
+        -688
+      ],
+      "notes": "🔧 If your text column has a specific name, hardcode it instead of auto-detect."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are to chooose 10 of the 500 data points avalible in th reviews avalable and create a 1 page summary of what you have read{{ $json.bullets }}",
+        "options": {
+          "systemMessage": "You are a helpYou are an AI analyst tasked with reading a random sample of user reviews stored in a csv table. \nYour goal is to produce a concise, decision-ready one-page brief plus a simple diagram.\n\n**Your outputs must always include two parts:**\n1. A **Markdown one-page report** (~300–500 words) that contains:\n   - TL;DR (1–2 bullets summarizing the main insights)\n   - Top 3–6 themes with rough % shares (estimate from the sample)\n   - Sentiment mix (negative / neutral / positive, with approximate %)\n   - 3 short, verbatim quotes from the sample that represent important points (do not fabricate quotes; skip if none are short enough)\n   - “Quick Wins” (actions feasible in 0–2 weeks)\n   - “Next Bets” (strategic actions feasible in 1–2 months)\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        -688
+      ],
+      "id": "76a3ef91-8082-4878-9104-3b5904ae1743",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1NsC2vW9gRA68Cmdy_Ciy3IFLty0cpBmZyTloflR7o0U/edit?usp=sharing",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2272,
+        -672
+      ],
+      "id": "72baa567-2fdb-4b4f-9ed0-13f58aff2533",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "J5gGW5lVtOCqVsNC",
+          "name": "Google Docs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "81f763c7-23ac-43b3-b8c3-6acd2ea554db",
+      "name": "Spreadsheet → Items",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        -272
+      ],
+      "notes": "Parses CSV rows into items."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Randomly sample up to 10 rows and build concise bullets.\nconst items = $input.all();\nconst rows = items.map(i => i.json);\n// Try to auto-detect likely text column\nconst guessTextKey = (row) => {\n  const prefer = ['text','review','review_text','body','content','comment','message','desc','description'];\n  for (const k of prefer) {\n    if (row[k] && String(row[k]).trim()) return k;\n  }\n  // fallback: longest string field\n  const keys = Object.keys(row);\n  let best = null, len = 0;\n  for (const k of keys) {\n    const v = row[k];\n    if (typeof v === 'string' && v.trim().length > len) { \n      best = k; \n      len = v.trim().length; \n    }\n  }\n  return best || 'text';\n};\nconst tKey = rows.length ? guessTextKey(rows[0]) : 'text';\n// Fisher–Yates shuffle then slice\nfor (let i = rows.length - 1; i > 0; i--) {\n  const j = Math.floor(Math.random() * (i + 1));\n  [rows[i], rows[j]] = [rows[j], rows[i]];\n}\nconst take = rows.slice(0, Math.min(10, rows.length));\nfunction trunc(s, n=600) { \n  if(!s) return ''; \n  s = String(s); \n  return s.length > n ? s.slice(0, n-3) + \"...\" : s; \n}\nconst bullets = take.map((r, idx) => {\n  const id = r.id ?? r.ID ?? r.row_id ?? (idx + 1);\n  const product = r.product ? ` (${r.product})` : '';\n  const rating = (r.rating != null && r.rating !== '') ? ` ★${r.rating}` : '';\n  const text = trunc(r[tKey] || '');\n  return `- [${id}]${product}${rating}: ${text}`;\n}).join('\\n');\nreturn [{ \n  json: { \n    count: take.length, \n    bullets, \n    textKeyUsed: tKey \n  } \n}];"
+      },
+      "id": "73721dd6-43f5-4369-b744-47df731c27dd",
+      "name": "Random Sample 1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1808,
+        -288
+      ],
+      "notes": "🔧 If your text column has a specific name, hardcode it instead of auto-detect."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are to chooose 10 of the 500 data points avalible in th reviews avalable and create a 1 page summary of what you have read{{ $json.bullets }}",
+        "options": {
+          "systemMessage": "You are a helpYou are an AI analyst tasked with reading a random sample of user reviews stored in a csv table. \nYour goal is to produce a concise, decision-ready one-page brief plus a simple diagram.\n\n**Your outputs must always include two parts:**\n1. A **Markdown one-page report** (~300–500 words) that contains:\n   - TL;DR (1–2 bullets summarizing the main insights)\n   - Top 3–6 themes with rough % shares (estimate from the sample)\n   - Sentiment mix (negative / neutral / positive, with approximate %)\n   - 3 short, verbatim quotes from the sample that represent important points (do not fabricate quotes; skip if none are short enough)\n   - “Quick Wins” (actions feasible in 0–2 weeks)\n   - “Next Bets” (strategic actions feasible in 1–2 months)\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        -288
+      ],
+      "id": "54af4a73-9292-4cbe-b14a-e63d94b49323",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1kjonuhj6KdGcC90sptlV0l685MhQef_giEJZ5C_jXz8/edit?usp=sharing",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2368,
+        -288
+      ],
+      "id": "8f88acf6-9f01-49c1-9c20-601630467366",
+      "name": "Update a document1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "J5gGW5lVtOCqVsNC",
+          "name": "Google Docs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1062c6d6-1830-48bb-a697-8aa702df3f1d",
+      "name": "Spreadsheet → Items2",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        128
+      ],
+      "notes": "Parses CSV rows into items."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Randomly sample up to 10 rows and build concise bullets.\nconst items = $input.all();\nconst rows = items.map(i => i.json);\n// Try to auto-detect likely text column\nconst guessTextKey = (row) => {\n  const prefer = ['text','review','review_text','body','content','comment','message','desc','description'];\n  for (const k of prefer) {\n    if (row[k] && String(row[k]).trim()) return k;\n  }\n  // fallback: longest string field\n  const keys = Object.keys(row);\n  let best = null, len = 0;\n  for (const k of keys) {\n    const v = row[k];\n    if (typeof v === 'string' && v.trim().length > len) { \n      best = k; \n      len = v.trim().length; \n    }\n  }\n  return best || 'text';\n};\nconst tKey = rows.length ? guessTextKey(rows[0]) : 'text';\n// Fisher–Yates shuffle then slice\nfor (let i = rows.length - 1; i > 0; i--) {\n  const j = Math.floor(Math.random() * (i + 1));\n  [rows[i], rows[j]] = [rows[j], rows[i]];\n}\nconst take = rows.slice(0, Math.min(10, rows.length));\nfunction trunc(s, n=600) { \n  if(!s) return ''; \n  s = String(s); \n  return s.length > n ? s.slice(0, n-3) + \"...\" : s; \n}\nconst bullets = take.map((r, idx) => {\n  const id = r.id ?? r.ID ?? r.row_id ?? (idx + 1);\n  const product = r.product ? ` (${r.product})` : '';\n  const rating = (r.rating != null && r.rating !== '') ? ` ★${r.rating}` : '';\n  const text = trunc(r[tKey] || '');\n  return `- [${id}]${product}${rating}: ${text}`;\n}).join('\\n');\nreturn [{ \n  json: { \n    count: take.length, \n    bullets, \n    textKeyUsed: tKey \n  } \n}];"
+      },
+      "id": "e71c830b-cd1c-4f0e-8611-4ed9e6db440c",
+      "name": "Random Sample 2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1904,
+        112
+      ],
+      "notes": "🔧 If your text column has a specific name, hardcode it instead of auto-detect."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are to chooose 10 of the 500 data points avalible in th reviews avalable and create a 1 page summary of what you have read{{ $json.bullets }}",
+        "options": {
+          "systemMessage": "You are a helpYou are an AI analyst tasked with reading a random sample of user reviews stored in a csv table. \nYour goal is to produce a concise, decision-ready one-page brief plus a simple diagram.\n\n**Your outputs must always include two parts:**\n1. A **Markdown one-page report** (~300–500 words) that contains:\n   - TL;DR (1–2 bullets summarizing the main insights)\n   - Top 3–6 themes with rough % shares (estimate from the sample)\n   - Sentiment mix (negative / neutral / positive, with approximate %)\n   - 3 short, verbatim quotes from the sample that represent important points (do not fabricate quotes; skip if none are short enough)\n   - “Quick Wins” (actions feasible in 0–2 weeks)\n   - “Next Bets” (strategic actions feasible in 1–2 months)\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2112,
+        112
+      ],
+      "id": "3bb826f3-c436-400c-a962-1b6cca24277c",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1NYGWqCaWFlVSkO3OnEBCpI4cv9aNeG2ajRJdTLimNl8/edit?usp=sharing",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2464,
+        112
+      ],
+      "id": "ac79cc8a-325c-4f24-92b6-3f7a5813bd47",
+      "name": "Update a document2",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "3w5aMOayAruuMC0g",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5bfff1eb-681b-49c2-926f-64cd4a5110bd",
+      "name": "Spreadsheet → Items3",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1632,
+        480
+      ],
+      "notes": "Parses CSV rows into items."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Randomly sample up to 10 rows and build concise bullets.\nconst items = $input.all();\nconst rows = items.map(i => i.json);\n// Try to auto-detect likely text column\nconst guessTextKey = (row) => {\n  const prefer = ['text','review','review_text','body','content','comment','message','desc','description'];\n  for (const k of prefer) {\n    if (row[k] && String(row[k]).trim()) return k;\n  }\n  // fallback: longest string field\n  const keys = Object.keys(row);\n  let best = null, len = 0;\n  for (const k of keys) {\n    const v = row[k];\n    if (typeof v === 'string' && v.trim().length > len) { \n      best = k; \n      len = v.trim().length; \n    }\n  }\n  return best || 'text';\n};\nconst tKey = rows.length ? guessTextKey(rows[0]) : 'text';\n// Fisher–Yates shuffle then slice\nfor (let i = rows.length - 1; i > 0; i--) {\n  const j = Math.floor(Math.random() * (i + 1));\n  [rows[i], rows[j]] = [rows[j], rows[i]];\n}\nconst take = rows.slice(0, Math.min(10, rows.length));\nfunction trunc(s, n=600) { \n  if(!s) return ''; \n  s = String(s); \n  return s.length > n ? s.slice(0, n-3) + \"...\" : s; \n}\nconst bullets = take.map((r, idx) => {\n  const id = r.id ?? r.ID ?? r.row_id ?? (idx + 1);\n  const product = r.product ? ` (${r.product})` : '';\n  const rating = (r.rating != null && r.rating !== '') ? ` ★${r.rating}` : '';\n  const text = trunc(r[tKey] || '');\n  return `- [${id}]${product}${rating}: ${text}`;\n}).join('\\n');\nreturn [{ \n  json: { \n    count: take.length, \n    bullets, \n    textKeyUsed: tKey \n  } \n}];"
+      },
+      "id": "44ead811-e1e5-4402-91af-b7996182c894",
+      "name": "Random Sample 3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1872,
+        464
+      ],
+      "notes": "🔧 If your text column has a specific name, hardcode it instead of auto-detect."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are to chooose 10 of the 500 data points avalible in th reviews avalable and create a 1 page summary of what you have read{{ $json.bullets }}",
+        "options": {
+          "systemMessage": "You are a helpYou are an AI analyst tasked with reading a random sample of user reviews stored in a csv table. \nYour goal is to produce a concise, decision-ready one-page brief plus a simple diagram.\n\n**Your outputs must always include two parts:**\n1. A **Markdown one-page report** (~300–500 words) that contains:\n   - TL;DR (1–2 bullets summarizing the main insights)\n   - Top 3–6 themes with rough % shares (estimate from the sample)\n   - Sentiment mix (negative / neutral / positive, with approximate %)\n   - 3 short, verbatim quotes from the sample that represent important points (do not fabricate quotes; skip if none are short enough)\n   - “Quick Wins” (actions feasible in 0–2 weeks)\n   - “Next Bets” (strategic actions feasible in 1–2 months)\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2080,
+        464
+      ],
+      "id": "21cb2883-a0e1-4c6b-946a-ccf87147a24e",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1Pb-e4PhHk0vexkWJGNiepAdXPqQ18Vl2Mf_9DNBejqA/edit?usp=sharing",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        464
+      ],
+      "id": "b4f0666a-a080-4113-aa40-cee53360706d",
+      "name": "Update a document3",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "J5gGW5lVtOCqVsNC",
+          "name": "Google Docs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "42593d55-3be8-418d-81e0-b0baf7638b30",
+      "name": "Spreadsheet → Items4",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        816
+      ],
+      "notes": "Parses CSV rows into items."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Randomly sample up to 10 rows and build concise bullets.\nconst items = $input.all();\nconst rows = items.map(i => i.json);\n// Try to auto-detect likely text column\nconst guessTextKey = (row) => {\n  const prefer = ['text','review','review_text','body','content','comment','message','desc','description'];\n  for (const k of prefer) {\n    if (row[k] && String(row[k]).trim()) return k;\n  }\n  // fallback: longest string field\n  const keys = Object.keys(row);\n  let best = null, len = 0;\n  for (const k of keys) {\n    const v = row[k];\n    if (typeof v === 'string' && v.trim().length > len) { \n      best = k; \n      len = v.trim().length; \n    }\n  }\n  return best || 'text';\n};\nconst tKey = rows.length ? guessTextKey(rows[0]) : 'text';\n// Fisher–Yates shuffle then slice\nfor (let i = rows.length - 1; i > 0; i--) {\n  const j = Math.floor(Math.random() * (i + 1));\n  [rows[i], rows[j]] = [rows[j], rows[i]];\n}\nconst take = rows.slice(0, Math.min(10, rows.length));\nfunction trunc(s, n=600) { \n  if(!s) return ''; \n  s = String(s); \n  return s.length > n ? s.slice(0, n-3) + \"...\" : s; \n}\nconst bullets = take.map((r, idx) => {\n  const id = r.id ?? r.ID ?? r.row_id ?? (idx + 1);\n  const product = r.product ? ` (${r.product})` : '';\n  const rating = (r.rating != null && r.rating !== '') ? ` ★${r.rating}` : '';\n  const text = trunc(r[tKey] || '');\n  return `- [${id}]${product}${rating}: ${text}`;\n}).join('\\n');\nreturn [{ \n  json: { \n    count: take.length, \n    bullets, \n    textKeyUsed: tKey \n  } \n}];"
+      },
+      "id": "95903fe4-5463-4d3c-8156-15ad805c3069",
+      "name": "Random Sample 4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1840,
+        800
+      ],
+      "notes": "🔧 If your text column has a specific name, hardcode it instead of auto-detect."
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are to chooose 10 of the 500 data points avalible in th reviews avalable and create a 1 page summary of what you have read{{ $json.bullets }}",
+        "options": {
+          "systemMessage": "You are a helpYou are an AI analyst tasked with reading a random sample of user reviews stored in a csv table. \nYour goal is to produce a concise, decision-ready one-page brief plus a simple diagram.\n\n**Your outputs must always include two parts:**\n1. A **Markdown one-page report** (~300–500 words) that contains:\n   - TL;DR (1–2 bullets summarizing the main insights)\n   - Top 3–6 themes with rough % shares (estimate from the sample)\n   - Sentiment mix (negative / neutral / positive, with approximate %)\n   - 3 short, verbatim quotes from the sample that represent important points (do not fabricate quotes; skip if none are short enough)\n   - “Quick Wins” (actions feasible in 0–2 weeks)\n   - “Next Bets” (strategic actions feasible in 1–2 months)\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2048,
+        800
+      ],
+      "id": "bb09f2d8-c4cf-488c-8775-d1ee21b11cc8",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/11c65O_OAX2eW4fP4eB_3qSl9fVfHfC3xAxuOl9rpkdQ/edit?usp=sharing",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        800
+      ],
+      "id": "6b8cc6b5-d076-4bf7-ad0d-0fc7aebd4159",
+      "name": "Update a document4",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "J5gGW5lVtOCqVsNC",
+          "name": "Google Docs account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Scrape iOS Reviews": {
+      "main": [
+        [
+          {
+            "node": "Process Reviews",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Android Reviews": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Reviews": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Scrape iOS Reviews2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Scrape iOS Reviews1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Scrape iOS Reviews",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Scrape Android Reviews",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Scrape Android Reviews1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet → Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Process Reviews1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Reviews1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet → Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape iOS Reviews1": {
+      "main": [
+        [
+          {
+            "node": "Process Reviews2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Reviews2": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet → Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape iOS Reviews2": {
+      "main": [
+        [
+          {
+            "node": "Process Reviews3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Reviews3": {
+      "main": [
+        [
+          {
+            "node": "Convert to File3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File3": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet → Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Android Reviews1": {
+      "main": [
+        [
+          {
+            "node": "Process Reviews4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Reviews4": {
+      "main": [
+        [
+          {
+            "node": "Convert to File4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File4": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet → Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet → Items1": {
+      "main": [
+        [
+          {
+            "node": "Random Sample ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random Sample ": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet → Items": {
+      "main": [
+        [
+          {
+            "node": "Random Sample 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random Sample 1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Update a document1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet → Items2": {
+      "main": [
+        [
+          {
+            "node": "Random Sample 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random Sample 2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Update a document2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet → Items3": {
+      "main": [
+        [
+          {
+            "node": "Random Sample 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random Sample 3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Update a document3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet → Items4": {
+      "main": [
+        [
+          {
+            "node": "Random Sample 4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random Sample 4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "Update a document4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a1a9e97037ece0c53211ba71fe7552886bc22f4e46fdee4a735dd7d1d1a70810"
+  }
+}
