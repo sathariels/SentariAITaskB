@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "app_name": "day_one",
+    "platform": "reddit",
+    "scraped_at": "2025-09-06T17:38:54.936278",
+    "total_scraped": 2,
+    "total_processed": 1,
+    "processing_stats": {
+      "original_count": 2,
+      "cleaned_count": 1,
+      "deduplicated_count": 1,
+      "classified_count": 1,
+      "final_count": 1
+    }
+  },
+  "reviews": [
+    {
+      "review_id": "reddit_post_1n9zvpl",
+      "platform": "reddit",
+      "app_name": "Day One",
+      "content": "2025 September 6: Dear Diary, Last night I went out with my dad to a restaurant. It was a really nice place and I certainly would go back there again. The biggest reason I would go back was because of a compliment I received from a waitress. Who allowed you to have such amazing hair, she said. I couldnt even react right away. I was flustered as hell. The boldness of the compliment was not something I have really heard before. It took me maybe two minutes to reply. You have very nice glasses, I replied. I meant it, the glasses really suited her. She thanked me for saying something about the glasses because they were new and she was not sure about them. That really made me happy knowing that my compliment meant something. It is always great to compliment others, especially when they compliment you. It would be nice if I could be so bold in my compliments. Luckily I was able to say something without even having a drink. My hair means a lot to me, so it was nice to hear someone else think it looks good. Does this mean I require validation from others? I do not think so. I just think it is nice to hear something nice like that. It is awesome to see good people interacting in life. Sincerely, Torinico",
+      "title": "Flustered",
+      "rating": 3,
+      "user_id": "Majick93",
+      "username": "Majick93",
+      "verified": false,
+      "review_date": "2025-09-06T09:42:13",
+      "scraped_at": "2025-09-06T17:38:54.263272",
+      "processed_at": null,
+      "helpful_count": 3,
+      "reply_count": 5,
+      "app_id": null,
+      "version": null,
+      "language": null,
+      "country": null,
+      "device": null,
+      "source_url": "https://reddit.com/r/Diary/comments/1n9zvpl/flustered/",
+      "cleaned_content": null,
+      "primary_category": "unclassified",
+      "category_scores": {
+        "ux_ui": 0.0,
+        "pricing": 0.0,
+        "performance": 0.0,
+        "features": 0.0,
+        "customer_service": 0.0,
+        "content_quality": 0.0
+      },
+      "classification_confidence": 0.0,
+      "sentiment": "positive",
+      "sentiment_score": 0.8296943231441047,
+      "keywords_found": [],
+      "is_duplicate": false,
+      "is_spam": false,
+      "quality_score": 0.0,
+      "raw_data": {
+        "subreddit": "Diary",
+        "upvote_ratio": 1.0,
+        "gilded": 0,
+        "sentiment_score": 0.17467248908296942,
+        "post_type": "submission"
+      }
+    }
+  ]
+}

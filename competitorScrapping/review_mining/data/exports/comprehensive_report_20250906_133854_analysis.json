@@ -1,0 +1,25 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-09-06T17:38:54.946677",
+    "report_type": "analysis"
+  },
+  "insights": [],
+  "category_analysis": {},
+  "sentiment_trends": {
+    "platform_sentiment_averages": {
+      "reddit": 0.8296943231441047
+    },
+    "app_sentiment_averages": {
+      "day_one": 0.8296943231441047
+    }
+  },
+  "quality_metrics": {
+    "total_reviews": 1,
+    "spam_count": 0,
+    "duplicate_count": 0,
+    "high_quality_count": 0,
+    "spam_rate": 0.0,
+    "duplicate_rate": 0.0,
+    "quality_rate": 0.0
+  }
+}

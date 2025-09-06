@@ -1,0 +1,40 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-09-06T17:45:57.985249",
+    "total_batches": 1,
+    "report_type": "summary"
+  },
+  "overall_stats": {
+    "total_reviews": 124,
+    "total_high_quality_reviews": 0,
+    "total_apps": 1,
+    "total_platforms": 1,
+    "average_rating": 3.1048387096774195,
+    "average_sentiment_score": 0.18616036683321432,
+    "quality_rate": 0.0
+  },
+  "batch_summaries": [
+    {
+      "app_name": "journey",
+      "platform": "reddit",
+      "total_reviews": 124,
+      "processed_reviews": 0,
+      "high_quality_reviews": 0,
+      "spam_reviews": 0,
+      "duplicate_reviews": 0,
+      "category_distribution": {},
+      "sentiment_distribution": {},
+      "rating_distribution": {},
+      "average_rating": 0,
+      "average_sentiment_score": 0,
+      "scraped_at": "2025-09-06T17:45:52.142492",
+      "processing_stats": {
+        "original_count": 200,
+        "cleaned_count": 178,
+        "deduplicated_count": 124,
+        "classified_count": 124,
+        "final_count": 124
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-09-06T17:47:34.547786",
+    "total_batches": 1,
+    "report_type": "summary"
+  },
+  "overall_stats": {
+    "total_reviews": 154,
+    "total_high_quality_reviews": 0,
+    "total_apps": 1,
+    "total_platforms": 1,
+    "average_rating": 3.064935064935065,
+    "average_sentiment_score": 0.16111061694222,
+    "quality_rate": 0.0
+  },
+  "batch_summaries": [
+    {
+      "app_name": "daily",
+      "platform": "reddit",
+      "total_reviews": 154,
+      "processed_reviews": 0,
+      "high_quality_reviews": 0,
+      "spam_reviews": 0,
+      "duplicate_reviews": 0,
+      "category_distribution": {},
+      "sentiment_distribution": {},
+      "rating_distribution": {},
+      "average_rating": 0,
+      "average_sentiment_score": 0,
+      "scraped_at": "2025-09-06T17:47:24.095084",
+      "processing_stats": {
+        "original_count": 200,
+        "cleaned_count": 185,
+        "deduplicated_count": 154,
+        "classified_count": 154,
+        "final_count": 154
+      }
+    }
+  ]
+}

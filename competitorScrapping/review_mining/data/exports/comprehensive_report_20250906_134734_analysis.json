@@ -1,0 +1,48 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-09-06T17:47:34.548961",
+    "report_type": "analysis"
+  },
+  "insights": [
+    "Most discussed category: features (11 reviews)"
+  ],
+  "category_analysis": {
+    "features": {
+      "count": 11,
+      "average_sentiment": 0.1338162983070727,
+      "average_rating": 3.0
+    },
+    "customer_service": {
+      "count": 6,
+      "average_sentiment": 0.1721863527419083,
+      "average_rating": 3.0
+    },
+    "content_quality": {
+      "count": 1,
+      "average_sentiment": 0.0,
+      "average_rating": 3.0
+    },
+    "pricing": {
+      "count": 2,
+      "average_sentiment": 0.1020408163265306,
+      "average_rating": 3.0
+    }
+  },
+  "sentiment_trends": {
+    "platform_sentiment_averages": {
+      "reddit": 0.16111061694222
+    },
+    "app_sentiment_averages": {
+      "daily": 0.16111061694222
+    }
+  },
+  "quality_metrics": {
+    "total_reviews": 154,
+    "spam_count": 0,
+    "duplicate_count": 0,
+    "high_quality_count": 0,
+    "spam_rate": 0.0,
+    "duplicate_rate": 0.0,
+    "quality_rate": 0.0
+  }
+}

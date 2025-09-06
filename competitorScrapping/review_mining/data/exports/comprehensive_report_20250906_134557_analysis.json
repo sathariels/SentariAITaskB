@@ -1,0 +1,48 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-09-06T17:45:57.986246",
+    "report_type": "analysis"
+  },
+  "insights": [
+    "Most discussed category: customer_service (5 reviews)"
+  ],
+  "category_analysis": {
+    "customer_service": {
+      "count": 5,
+      "average_sentiment": 0.12257266542980827,
+      "average_rating": 3.0
+    },
+    "features": {
+      "count": 4,
+      "average_sentiment": 0.17453135100193926,
+      "average_rating": 3.0
+    },
+    "performance": {
+      "count": 1,
+      "average_sentiment": 0.5747126436781609,
+      "average_rating": 3.0
+    },
+    "content_quality": {
+      "count": 1,
+      "average_sentiment": 0.23255813953488372,
+      "average_rating": 3.0
+    }
+  },
+  "sentiment_trends": {
+    "platform_sentiment_averages": {
+      "reddit": 0.18616036683321432
+    },
+    "app_sentiment_averages": {
+      "journey": 0.18616036683321432
+    }
+  },
+  "quality_metrics": {
+    "total_reviews": 124,
+    "spam_count": 0,
+    "duplicate_count": 0,
+    "high_quality_count": 0,
+    "spam_rate": 0.0,
+    "duplicate_rate": 0.0,
+    "quality_rate": 0.0
+  }
+}

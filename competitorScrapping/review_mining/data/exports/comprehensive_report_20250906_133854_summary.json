@@ -1,0 +1,40 @@
+{
+  "report_metadata": {
+    "generated_at": "2025-09-06T17:38:54.945642",
+    "total_batches": 1,
+    "report_type": "summary"
+  },
+  "overall_stats": {
+    "total_reviews": 1,
+    "total_high_quality_reviews": 0,
+    "total_apps": 1,
+    "total_platforms": 1,
+    "average_rating": 3.0,
+    "average_sentiment_score": 0.8296943231441047,
+    "quality_rate": 0.0
+  },
+  "batch_summaries": [
+    {
+      "app_name": "day_one",
+      "platform": "reddit",
+      "total_reviews": 1,
+      "processed_reviews": 0,
+      "high_quality_reviews": 0,
+      "spam_reviews": 0,
+      "duplicate_reviews": 0,
+      "category_distribution": {},
+      "sentiment_distribution": {},
+      "rating_distribution": {},
+      "average_rating": 0,
+      "average_sentiment_score": 0,
+      "scraped_at": "2025-09-06T17:38:54.936278",
+      "processing_stats": {
+        "original_count": 2,
+        "cleaned_count": 1,
+        "deduplicated_count": 1,
+        "classified_count": 1,
+        "final_count": 1
+      }
+    }
+  ]
+}

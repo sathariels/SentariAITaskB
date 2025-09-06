@@ -1,0 +1,270 @@
+2025-09-04 23:28:13 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:28:13 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-04 23:28:13 - review_mining - INFO - Starting review scraping for day_one on platforms: ['reddit', 'playstore']
+2025-09-04 23:28:13 - review_mining - INFO - Scraping day_one reviews from reddit
+2025-09-04 23:28:17 - review_mining - INFO - Scraped 5 reviews from reddit
+2025-09-04 23:28:17 - review_mining - INFO - Scraping day_one reviews from playstore
+2025-09-04 23:28:20 - review_mining - INFO - Scraped 50 reviews from playstore
+2025-09-04 23:28:20 - review_mining - INFO - Completed scraping for day_one: 2 batches created
+2025-09-04 23:28:20 - review_mining - INFO - Starting processing of 2 review batches
+2025-09-04 23:28:20 - review_mining - INFO - Processing batch: day_one - reddit
+2025-09-04 23:28:20 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:28:20 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:28:20 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:28:20 - review_mining - INFO - Processed batch: 3 final reviews from 5 original
+2025-09-04 23:28:20 - review_mining - INFO - Processing batch: day_one - playstore
+2025-09-04 23:28:20 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:28:20 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:28:20 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:28:20 - review_mining - INFO - Processed batch: 33 final reviews from 50 original
+2025-09-04 23:28:20 - review_mining - INFO - Completed processing: 2 batches processed
+2025-09-04 23:28:20 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:28:20 - review_mining - ERROR - Error during export: Object of type datetime is not JSON serializable
+2025-09-04 23:28:20 - review_mining - INFO - Pipeline completed successfully: 36/55 reviews processed in 6.54s
+2025-09-04 23:32:16 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:32:16 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-04 23:32:16 - review_mining - INFO - Starting review scraping for day_one on platforms: ['reddit', 'playstore']
+2025-09-04 23:32:16 - review_mining - INFO - Scraping day_one reviews from reddit
+2025-09-04 23:32:58 - review_mining - INFO - Scraped 100 reviews from reddit
+2025-09-04 23:32:58 - review_mining - INFO - Scraping day_one reviews from playstore
+2025-09-04 23:32:58 - review_mining - WARNING - No reviews found for day_one on playstore
+2025-09-04 23:32:58 - review_mining - INFO - Completed scraping for day_one: 1 batches created
+2025-09-04 23:32:58 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:32:58 - review_mining - INFO - Processing batch: day_one - reddit
+2025-09-04 23:32:58 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:32:58 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:33:00 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:33:01 - review_mining - INFO - Processed batch: 75 final reviews from 100 original
+2025-09-04 23:33:01 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:33:01 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:33:01 - review_mining - INFO - Export completed: 5 files created
+2025-09-04 23:33:01 - review_mining - INFO - Pipeline completed successfully: 75/100 reviews processed in 44.08s
+2025-09-04 23:34:43 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:34:43 - review_mining - INFO - Starting full pipeline for journey
+2025-09-04 23:34:43 - review_mining - INFO - Starting review scraping for journey on platforms: ['reddit', 'playstore']
+2025-09-04 23:34:43 - review_mining - INFO - Scraping journey reviews from reddit
+2025-09-04 23:34:47 - review_mining - INFO - Scraped 6 reviews from reddit
+2025-09-04 23:34:47 - review_mining - INFO - Scraping journey reviews from playstore
+2025-09-04 23:34:48 - review_mining - WARNING - No reviews found for journey on playstore
+2025-09-04 23:34:48 - review_mining - INFO - Completed scraping for journey: 1 batches created
+2025-09-04 23:34:48 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:34:48 - review_mining - INFO - Processing batch: journey - reddit
+2025-09-04 23:34:48 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:34:48 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:34:48 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:34:48 - review_mining - INFO - Processed batch: 4 final reviews from 6 original
+2025-09-04 23:34:48 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:34:48 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:34:48 - review_mining - INFO - Export completed: 5 files created
+2025-09-04 23:34:48 - review_mining - INFO - Pipeline completed successfully: 4/6 reviews processed in 4.31s
+2025-09-04 23:35:09 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:35:09 - review_mining - INFO - Starting full pipeline for daily
+2025-09-04 23:35:09 - review_mining - INFO - Starting review scraping for daily on platforms: ['playstore']
+2025-09-04 23:35:09 - review_mining - INFO - Scraping daily reviews from playstore
+2025-09-04 23:35:09 - review_mining - WARNING - No reviews found for daily on playstore
+2025-09-04 23:35:09 - review_mining - INFO - Completed scraping for daily: 0 batches created
+2025-09-04 23:35:09 - review_mining - ERROR - No reviews scraped, aborting pipeline
+2025-09-04 23:35:27 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:35:27 - review_mining - INFO - Starting full pipeline for diaro
+2025-09-04 23:35:27 - review_mining - INFO - Starting review scraping for diaro on platforms: ['playstore']
+2025-09-04 23:35:27 - review_mining - INFO - Scraping diaro reviews from playstore
+2025-09-04 23:35:29 - review_mining - INFO - Scraped 30 reviews from playstore
+2025-09-04 23:35:29 - review_mining - INFO - Completed scraping for diaro: 1 batches created
+2025-09-04 23:35:29 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:35:29 - review_mining - INFO - Processing batch: diaro - playstore
+2025-09-04 23:35:29 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:35:29 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:35:29 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:35:29 - review_mining - INFO - Processed batch: 20 final reviews from 30 original
+2025-09-04 23:35:29 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:35:29 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:35:29 - review_mining - ERROR - Error during export: Object of type datetime is not JSON serializable
+2025-09-04 23:35:29 - review_mining - INFO - Pipeline completed successfully: 20/30 reviews processed in 2.30s
+2025-09-04 23:36:07 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:36:07 - review_mining - INFO - Starting full pipeline for diaro
+2025-09-04 23:36:07 - review_mining - INFO - Starting review scraping for diaro on platforms: ['reddit', 'playstore']
+2025-09-04 23:36:07 - review_mining - INFO - Scraping diaro reviews from reddit
+2025-09-04 23:36:11 - review_mining - INFO - Scraped 4 reviews from reddit
+2025-09-04 23:36:11 - review_mining - INFO - Scraping diaro reviews from playstore
+2025-09-04 23:36:13 - review_mining - INFO - Scraped 50 reviews from playstore
+2025-09-04 23:36:13 - review_mining - INFO - Completed scraping for diaro: 2 batches created
+2025-09-04 23:36:13 - review_mining - INFO - Starting processing of 2 review batches
+2025-09-04 23:36:13 - review_mining - INFO - Processing batch: diaro - reddit
+2025-09-04 23:36:13 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:36:13 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:36:13 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:36:13 - review_mining - INFO - Processed batch: 2 final reviews from 4 original
+2025-09-04 23:36:13 - review_mining - INFO - Processing batch: diaro - playstore
+2025-09-04 23:36:13 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:36:13 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:36:14 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:36:14 - review_mining - INFO - Processed batch: 33 final reviews from 50 original
+2025-09-04 23:36:14 - review_mining - INFO - Completed processing: 2 batches processed
+2025-09-04 23:36:14 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:36:14 - review_mining - INFO - Export completed: 7 files created
+2025-09-04 23:36:14 - review_mining - INFO - Pipeline completed successfully: 35/54 reviews processed in 6.32s
+2025-09-04 23:40:07 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:40:07 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-04 23:40:07 - review_mining - INFO - Starting review scraping for day_one on platforms: ['reddit']
+2025-09-04 23:40:07 - review_mining - INFO - Scraping day_one reviews from reddit
+2025-09-04 23:41:12 - review_mining - INFO - Scraped 100 reviews from reddit
+2025-09-04 23:41:12 - review_mining - INFO - Completed scraping for day_one: 1 batches created
+2025-09-04 23:41:12 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:41:12 - review_mining - INFO - Processing batch: day_one - reddit
+2025-09-04 23:41:12 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:41:12 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:41:15 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:41:15 - review_mining - INFO - Processed batch: 73 final reviews from 100 original
+2025-09-04 23:41:15 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:41:15 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:41:15 - review_mining - INFO - Export completed: 5 files created
+2025-09-04 23:41:15 - review_mining - INFO - Pipeline completed successfully: 73/100 reviews processed in 68.02s
+2025-09-04 23:41:21 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:41:21 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-04 23:41:21 - review_mining - INFO - Starting review scraping for day_one on platforms: ['reddit']
+2025-09-04 23:41:21 - review_mining - INFO - Scraping day_one reviews from reddit
+2025-09-04 23:41:25 - review_mining - INFO - Scraped 5 reviews from reddit
+2025-09-04 23:41:25 - review_mining - INFO - Completed scraping for day_one: 1 batches created
+2025-09-04 23:41:25 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:41:25 - review_mining - INFO - Processing batch: day_one - reddit
+2025-09-04 23:41:25 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:41:25 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:41:25 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:41:25 - review_mining - INFO - Processed batch: 3 final reviews from 5 original
+2025-09-04 23:41:25 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:41:25 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:41:25 - review_mining - INFO - Export completed: 5 files created
+2025-09-04 23:41:25 - review_mining - INFO - Pipeline completed successfully: 3/5 reviews processed in 3.97s
+2025-09-04 23:41:42 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:41:42 - review_mining - INFO - Starting full pipeline for journey
+2025-09-04 23:41:42 - review_mining - INFO - Starting review scraping for journey on platforms: ['reddit']
+2025-09-04 23:41:42 - review_mining - INFO - Scraping journey reviews from reddit
+2025-09-04 23:41:46 - review_mining - INFO - Scraped 6 reviews from reddit
+2025-09-04 23:41:46 - review_mining - INFO - Completed scraping for journey: 1 batches created
+2025-09-04 23:41:46 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:41:46 - review_mining - INFO - Processing batch: journey - reddit
+2025-09-04 23:41:46 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:41:46 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:41:46 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:41:46 - review_mining - INFO - Processed batch: 4 final reviews from 6 original
+2025-09-04 23:41:46 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:41:46 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:41:46 - review_mining - INFO - Export completed: 5 files created
+2025-09-04 23:41:46 - review_mining - INFO - Pipeline completed successfully: 4/6 reviews processed in 4.07s
+2025-09-04 23:42:07 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:42:07 - review_mining - INFO - Starting full pipeline for daily
+2025-09-04 23:42:07 - review_mining - INFO - Starting review scraping for daily on platforms: ['reddit']
+2025-09-04 23:42:07 - review_mining - INFO - Scraping daily reviews from reddit
+2025-09-04 23:42:11 - review_mining - INFO - Scraped 6 reviews from reddit
+2025-09-04 23:42:11 - review_mining - INFO - Completed scraping for daily: 1 batches created
+2025-09-04 23:42:11 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:42:11 - review_mining - INFO - Processing batch: daily - reddit
+2025-09-04 23:42:11 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:42:11 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:42:11 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:42:11 - review_mining - INFO - Processed batch: 4 final reviews from 6 original
+2025-09-04 23:42:11 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:42:11 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:42:11 - review_mining - INFO - Export completed: 5 files created
+2025-09-04 23:42:11 - review_mining - INFO - Pipeline completed successfully: 4/6 reviews processed in 3.93s
+2025-09-04 23:44:54 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:44:54 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-04 23:44:54 - review_mining - INFO - Starting review scraping for day_one on platforms: ['playstore']
+2025-09-04 23:44:54 - review_mining - INFO - Scraping day_one reviews from playstore
+2025-09-04 23:44:56 - review_mining - INFO - Scraped 20 reviews from playstore
+2025-09-04 23:44:56 - review_mining - INFO - Completed scraping for day_one: 1 batches created
+2025-09-04 23:44:56 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-04 23:44:56 - review_mining - INFO - Processing batch: day_one - playstore
+2025-09-04 23:44:56 - review_mining - INFO - Cleaning reviews...
+2025-09-04 23:44:56 - review_mining - INFO - Deduplicating reviews...
+2025-09-04 23:44:56 - review_mining - INFO - Classifying reviews...
+2025-09-04 23:44:56 - review_mining - INFO - Processed batch: 16 final reviews from 20 original
+2025-09-04 23:44:56 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-04 23:44:56 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-04 23:44:56 - review_mining - INFO - Export completed: 5 files created
+2025-09-04 23:44:56 - review_mining - INFO - Pipeline completed successfully: 16/20 reviews processed in 2.23s
+2025-09-04 23:45:40 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:45:40 - review_mining - INFO - Starting full pipeline for journey
+2025-09-04 23:45:40 - review_mining - INFO - Starting review scraping for journey on platforms: ['playstore']
+2025-09-04 23:45:40 - review_mining - INFO - Scraping journey reviews from playstore
+2025-09-04 23:45:40 - review_mining - WARNING - No reviews found for journey on playstore
+2025-09-04 23:45:40 - review_mining - INFO - Completed scraping for journey: 0 batches created
+2025-09-04 23:45:40 - review_mining - ERROR - No reviews scraped, aborting pipeline
+2025-09-04 23:46:05 - review_mining - INFO - Review mining system initialized
+2025-09-04 23:46:05 - review_mining - INFO - Starting full pipeline for daily
+2025-09-04 23:46:05 - review_mining - INFO - Starting review scraping for daily on platforms: ['playstore']
+2025-09-04 23:46:05 - review_mining - INFO - Scraping daily reviews from playstore
+2025-09-04 23:46:05 - review_mining - WARNING - No reviews found for daily on playstore
+2025-09-04 23:46:05 - review_mining - INFO - Completed scraping for daily: 0 batches created
+2025-09-04 23:46:05 - review_mining - ERROR - No reviews scraped, aborting pipeline
+2025-09-06 13:38:15 - review_mining - INFO - Review mining system initialized
+2025-09-06 13:38:15 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-06 13:38:15 - review_mining - INFO - Starting review scraping for day_one on platforms: ['reddit']
+2025-09-06 13:38:15 - review_mining - INFO - Scraping day_one reviews from reddit
+2025-09-06 13:38:15 - review_mining - WARNING - No reviews found for day_one on reddit
+2025-09-06 13:38:15 - review_mining - INFO - Completed scraping for day_one: 0 batches created
+2025-09-06 13:38:15 - review_mining - ERROR - No reviews scraped, aborting pipeline
+2025-09-06 13:38:51 - review_mining - INFO - Review mining system initialized
+2025-09-06 13:38:51 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-06 13:38:51 - review_mining - INFO - Starting review scraping for day_one on platforms: ['reddit']
+2025-09-06 13:38:51 - review_mining - INFO - Scraping day_one reviews from reddit
+2025-09-06 13:38:54 - review_mining - INFO - Scraped 2 reviews from reddit
+2025-09-06 13:38:54 - review_mining - INFO - Completed scraping for day_one: 1 batches created
+2025-09-06 13:38:54 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-06 13:38:54 - review_mining - INFO - Processing batch: day_one - reddit
+2025-09-06 13:38:54 - review_mining - INFO - Cleaning reviews...
+2025-09-06 13:38:54 - review_mining - INFO - Deduplicating reviews...
+2025-09-06 13:38:54 - review_mining - INFO - Classifying reviews...
+2025-09-06 13:38:54 - review_mining - INFO - Processed batch: 1 final reviews from 2 original
+2025-09-06 13:38:54 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-06 13:38:54 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-06 13:38:54 - review_mining - INFO - Export completed: 5 files created
+2025-09-06 13:38:54 - review_mining - INFO - Pipeline completed successfully: 1/2 reviews processed in 3.04s
+2025-09-06 13:42:39 - review_mining - INFO - Review mining system initialized
+2025-09-06 13:42:39 - review_mining - INFO - Starting full pipeline for day_one
+2025-09-06 13:42:39 - review_mining - INFO - Starting review scraping for day_one on platforms: ['reddit']
+2025-09-06 13:42:39 - review_mining - INFO - Scraping day_one reviews from reddit
+2025-09-06 13:44:01 - review_mining - INFO - Scraped 200 reviews from reddit
+2025-09-06 13:44:01 - review_mining - INFO - Completed scraping for day_one: 1 batches created
+2025-09-06 13:44:01 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-06 13:44:01 - review_mining - INFO - Processing batch: day_one - reddit
+2025-09-06 13:44:01 - review_mining - INFO - Cleaning reviews...
+2025-09-06 13:44:01 - review_mining - INFO - Deduplicating reviews...
+2025-09-06 13:44:11 - review_mining - INFO - Classifying reviews...
+2025-09-06 13:44:11 - review_mining - INFO - Processed batch: 143 final reviews from 200 original
+2025-09-06 13:44:11 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-06 13:44:11 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-06 13:44:11 - review_mining - INFO - Export completed: 5 files created
+2025-09-06 13:44:11 - review_mining - INFO - Pipeline completed successfully: 143/200 reviews processed in 92.08s
+2025-09-06 13:44:25 - review_mining - INFO - Review mining system initialized
+2025-09-06 13:44:25 - review_mining - INFO - Starting full pipeline for journey
+2025-09-06 13:44:25 - review_mining - INFO - Starting review scraping for journey on platforms: ['reddit']
+2025-09-06 13:44:25 - review_mining - INFO - Scraping journey reviews from reddit
+2025-09-06 13:45:52 - review_mining - INFO - Scraped 200 reviews from reddit
+2025-09-06 13:45:52 - review_mining - INFO - Completed scraping for journey: 1 batches created
+2025-09-06 13:45:52 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-06 13:45:52 - review_mining - INFO - Processing batch: journey - reddit
+2025-09-06 13:45:52 - review_mining - INFO - Cleaning reviews...
+2025-09-06 13:45:52 - review_mining - INFO - Deduplicating reviews...
+2025-09-06 13:45:57 - review_mining - INFO - Classifying reviews...
+2025-09-06 13:45:57 - review_mining - INFO - Processed batch: 124 final reviews from 200 original
+2025-09-06 13:45:57 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-06 13:45:57 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-06 13:45:57 - review_mining - INFO - Export completed: 5 files created
+2025-09-06 13:45:57 - review_mining - INFO - Pipeline completed successfully: 124/200 reviews processed in 92.09s
+2025-09-06 13:46:12 - review_mining - INFO - Review mining system initialized
+2025-09-06 13:46:12 - review_mining - INFO - Starting full pipeline for daily
+2025-09-06 13:46:12 - review_mining - INFO - Starting review scraping for daily on platforms: ['reddit']
+2025-09-06 13:46:12 - review_mining - INFO - Scraping daily reviews from reddit
+2025-09-06 13:47:24 - review_mining - INFO - Scraped 200 reviews from reddit
+2025-09-06 13:47:24 - review_mining - INFO - Completed scraping for daily: 1 batches created
+2025-09-06 13:47:24 - review_mining - INFO - Starting processing of 1 review batches
+2025-09-06 13:47:24 - review_mining - INFO - Processing batch: daily - reddit
+2025-09-06 13:47:24 - review_mining - INFO - Cleaning reviews...
+2025-09-06 13:47:24 - review_mining - INFO - Deduplicating reviews...
+2025-09-06 13:47:34 - review_mining - INFO - Classifying reviews...
+2025-09-06 13:47:34 - review_mining - INFO - Processed batch: 154 final reviews from 200 original
+2025-09-06 13:47:34 - review_mining - INFO - Completed processing: 1 batches processed
+2025-09-06 13:47:34 - review_mining - INFO - Exporting results in formats: ['csv', 'json', 'report']
+2025-09-06 13:47:34 - review_mining - INFO - Export completed: 5 files created
+2025-09-06 13:47:34 - review_mining - INFO - Pipeline completed successfully: 154/200 reviews processed in 81.94s
